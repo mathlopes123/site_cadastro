@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro de Aluno - Biblioteca</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Cadastro de Aluno 📚</h2>
+
+  <table>
+    <tr>
+      <td><label for="codigo">Código do Aluno</label></td>
+      <td><input type="text" id="codigo" class="readonly" readonly></td>
+    </tr>
+
+    <tr>
+      <td><label for="cgm">CGM</label></td>
+      <td>
+        <div class="cgm-container">
+          <input type="text" id="cgm" maxlength="10" oninput="validarCGM(event)" required>
+          <button type="button" class="buscar">🔍</button>
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td><label for="nome">Nome</label></td>
+      <td><input type="text" id="nome" required></td>
+    </tr>
+
+    <tr>
+      <td><label for="email">E-mail</label></td>
+      <td><input type="email" id="email" oninput="validarEmail(event)" required></td>
+    </tr>
+
+    <tr>
+      <td><label for="celular">Celular</label></td>
+      <td><input type="text" id="celular" maxlength="14" placeholder="(XX)XXXXX-XX" oninput="formatarCelular(event)" required></td>
+    </tr>
+
+    <tr>
+      <td><label for="serie">Série</label></td>
+      <td>
+        <select id="serie" required>
+          <option value="">Selecione a série</option>
+          <option value="1º Ano">1º Ano</option>
+          <option value="2º Ano">2º Ano</option>
+          <option value="3º Ano">3º Ano</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td><label for="turma">Turma</label></td>
+      <td>
+        <select id="turma" required>
+          <option value="">Selecione a turma</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+          <option value="E">E</option>
+          <option value="DS">Desenvolvimento de Sistemas</option>
+          <option value="FD">Formação de Docentes</option>
+          <option value="ES">Estética</option>
+          <option value="AD">Administração</option>
+          <option value="EN">Enfermagem</option>
+          <option value="ST">Segurança do Trabalho</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td><label for="cep">CEP</label></td>
+      <td><input type="text" id="cep" maxlength="9" placeholder="xxxxx-xxx" oninput="buscarEndereco()" required></td>
+    </tr>
+
+    <tr>
+      <td><label for="endereco">Endereço</label></td>
+      <td><input type="text" id="endereco" required></td>
+    </tr>
+
+    <tr>
+      <td><label for="bairro">Bairro</label></td>
+      <td><input type="text" id="bairro" required></td>
+    </tr>
+
+    <tr>
+      <td><label for="cidade">Cidade</label></td>
+      <td><select id="cidade" required></select></td>
+    </tr>
+
+    <tr>
+      <td><label for="estado">Estado</label></td>
+      <td><select id="estado" required></select></td>
+    </tr>
+  </table>
+
+  <div class="botao-container">
+    <button type="submit">✅ Cadastrar</button>
+    <button type="button" class="cancelar" onclick="cancelarCadastro()">❌ Cancelar</button>
+    <button type="button" class="excluir" onclick="excluirCadastro()">🗑️ Excluir</button>
+  </div>
+</div>
+
+</body>
+</html>
