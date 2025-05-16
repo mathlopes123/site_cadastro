@@ -34,7 +34,8 @@ function formatarCelular(event) {
   
   event.target.value = v;
 
-  if (v.length !== 15) { // 15 porque inclui os parênteses e hífen
+  // Verifica se o número tem exatamente 12 dígitos, excluindo os caracteres de formatação
+  if (v.replace(/\D/g, "").length !== 12) {
     exibirPopup("❌ O celular deve ter exatamente 12 números, no formato correto: (XX)XXXXX-XXXX.");
     return false;
   }
@@ -42,6 +43,12 @@ function formatarCelular(event) {
   exibirPopup("✅ Celular válido!");
   return true;
 }
+
+// Função para exibir o popup (pode ser substituída conforme necessidade)
+function exibirPopup(mensagem) {
+  alert(mensagem); // Exibe a mensagem em um popup
+}
+
 
 function validarFormulario(event) {
   event.preventDefault();
