@@ -18,7 +18,6 @@ body {
 /* Container ajustado corretamente */
 .container {
   width: 90vw;
-  min-height: 95vh;
   background-color: #ffffff;
   padding: 40px;
   border-radius: 20px;
@@ -28,6 +27,25 @@ body {
   justify-content: space-between;
   position: relative;
   z-index: 10;
+  margin: 5%;
+}
+ 
+img {
+  width: 20%;
+}
+
+.cada {
+    display: flex; /* Mantém flexbox */
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: flex-start; /* Alinha os itens à esquerda */
+    gap: 10px; /* Adiciona um espaço entre a imagem e o texto */
+    width: 100%;
+}
+
+.cada h2 {
+    text-align: center; /* Garante que o texto dentro do h2 fique centralizado */
+    margin: 0 auto; /* Centraliza horizontalmente dentro da célula */
+    flex: 1; /* Faz o título ocupar o espaço necessário */
 }
 
 /* Título centralizado */
