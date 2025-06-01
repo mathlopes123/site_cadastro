@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro de Aluno - Biblioteca</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <table class="topo">
+    <tr>
+      <td><img src="img/barbosa.png" alt=""></td>
+      <td class="cada"><h2>Cadastro de Aluno 📚</h2></td>
+    </tr>
+  </table>
+
+  <form action="processar-dados.php" method="post" onsubmit="return validarFormulario(event)">
+    <table>
+      <tr>
+        <td><label for="codigo">Código do Aluno</label></td>
+        <td><input name="codigo" id="codigo" class="readonly" readonly></td>
+      </tr>
+      <tr>
+        <td><label for="cgm">CGM</label></td>
+        <td><input type="text" name="cgm" id="cgm" maxlength="10" oninput="validarCGM(event)" required></td>
+      </tr>
+      <tr>
+        <td><label for="nome">Nome</label></td>
+        <td><input name="nome" id="nome" required></td>
+      </tr>
+      <tr>
+        <td><label for="email">E-mail</label></td>
+        <td><input name="email" id="email" oninput="validarEmail(event)" required></td>
+      </tr>
+      <tr>
+        <td><label for="celular">Celular</label></td>
+        <td><input name="celular" id="celular" maxlength="14" placeholder="(XX)XXXXX-XXXX" oninput="formatarCelular(event)" required></td>
+      </tr>
+      <tr>
+        <td><label for="serie">Série</label></td>
+        <td>
+          <select id="serie" name="serie" required>
+            <option value="">Selecione a série</option>
+            <option value="1º Ano">1º Ano</option>
+            <option value="2º Ano">2º Ano</option>
+            <option value="3º Ano">3º Ano</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><label for="turma">Turma</label></td>
+        <td>
+          <select id="turma" required name="turma">
+            <option value="">Selecione a turma</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
+            <option value="DS">Desenvolvimento de Sistemas</option>
+            <option value="FD">Formação de Docentes</option>
+            <option value="ES">Estética</option>
+            <option value="AD">Administração</option>
+            <option value="EN">Enfermagem</option>
+            <option value="ST">Segurança do Trabalho</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><label for="cep">CEP</label></td>
+        <td><input type="text" name="cep" id="cep" maxlength="9" placeholder="xxxxx-xxx" oninput="buscarEndereco()" required></td>
+      </tr>
+      <tr>
+        <td><label for="endereco">Endereço</label></td>
+        <td><input name="endereco" type="text" id="endereco" required></td>
+      </tr>
+      <tr>
+        <td><label for="bairro">Bairro</label></td>
+        <td><input name="bairro" type="text" id="bairro" required></td>
+      </tr>
+      <tr>
+        <td><label for="cidade">Cidade</label></td>
+        <td><select name="cidade" id="cidade" required></select></td>
+      </tr>
+      <tr>
+        <td><label for="estado">Estado</label></td>
+        <td><select name="estado" id="estado" required></select></td>
+      </tr>
+    </table>
+    <div class="botao-container">
+      <button type="submit">✅ Cadastrar</button>
+    </div>
+  </form>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", gerarCodigoAluno);
+
+function gerarCodigoAluno() {
+  const codigo = Math.floor(Math.random() * 1000000000);
+  document.getElementById("codigo").value = codigo;
+}
+
+function validarCGM(event) {
+  let cgm = event.target.value.replace(/\D/g, "");
+  if (cgm.length > 10) cgm = cgm.slice(0, 10);
+  event.target.value = cgm;
+}
+
+function validarEmail(event) {
+  const email = event.target.value;
+  if (!email.includes("@")) {
+    exibirPopup("❌ O e-mail deve conter '@' obrigatoriamente.");
+    return false;
+  }
+  exibirPopup("✅ E-mail válido!");
+  return true;
+}
+
+function formatarCelular(event) {
+  let v = event.target.value.replace(/\D/g, "");
+  if (v.length > 12) v = v.slice(0, 12);
+
+  if (v.length >= 2 && v.length <= 7) {
+    v = `(${v.slice(0,2)})${v.slice(2)}`;
+  } else if (v.length > 7) {
+    v = `(${v.slice(0,2)})${v.slice(2,7)}-${v.slice(7)}`;
+  }
+
+  event.target.value = v;
+  if (v.replace(/\D/g, "").length !== 12) {
+    exibirPopup("❌ O celular deve ter exatamente 12 números, no formato correto: (XX)XXXXX-XXXX.");
+    return false;
+  }
+
+  exibirPopup("✅ Celular válido!");
+  return true;
+}
+
+function exibirPopup(mensagem) {
+  alert(mensagem);
+}
+
+async function buscarEndereco() {
+  const cep = document.getElementById("cep").value.replace(/\D/g, "");
+  if (cep.length !== 8) return;
+
+  try {
+    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    if (!response.ok) throw new Error("Erro na requisição");
+
+    const data = await response.json();
+
+    if (data.erro) {
+      exibirPopup("❌ CEP inválido!");
+      return;
+    }
+
+    document.getElementById("endereco").value = data.logradouro || "";
+    document.getElementById("bairro").value = data.bairro || "";
+    document.getElementById("cidade").innerHTML = `<option>${data.localidade}</option>`;
+    document.getElementById("estado").innerHTML = `<option>${data.uf}</option>`;
+    exibirPopup("✅ Endereço carregado com sucesso!");
+  } catch (error) {
+    exibirPopup("❌ Erro ao buscar o endereço. Tente novamente.");
+  }
+}
+</script>
+
+</body>
+</html>
