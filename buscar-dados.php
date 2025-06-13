@@ -14,7 +14,17 @@ if ($conn->connect_error) {
 
 $cgm = $_GET['cgm'] ?? '';
 
-$stmt = $conn->prepare("SELECT * FROM alunos WHERE cgm = ?");
+// Verificar se a coluna 'status' existe na tabela
+$checkColumn = $conn->query("SHOW COLUMNS FROM alunos LIKE 'status'");
+
+if ($checkColumn->num_rows > 0) {
+    // Se a coluna existir, buscar apenas alunos ativos ou sem status definido
+    $stmt = $conn->prepare("SELECT * FROM alunos WHERE cgm = ? AND (status = 'ativo' OR status IS NULL)");
+} else {
+    // Se a coluna não existir, buscar todos os alunos
+    $stmt = $conn->prepare("SELECT * FROM alunos WHERE cgm = ?");
+}
+
 $stmt->bind_param("s", $cgm);
 $stmt->execute();
 $result = $stmt->get_result();
