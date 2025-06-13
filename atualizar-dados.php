@@ -28,9 +28,15 @@ $smtp->bind_param(
 );
 
 if ($smtp->execute()) {
-    echo "<script>alert('✅ Dados atualizados com sucesso!'); window.location.href='buscar-aluno.php';</script>";
+    echo "<script>
+        alert('✅ Dados atualizados com sucesso!');
+        window.location.href='busca.php';
+    </script>";
 } else {
-    echo "<script>alert('❌ Erro ao atualizar os dados: ".$smtp->error."');</script>";
+    echo "<script>
+        alert('❌ Erro ao atualizar os dados: ".$smtp->error."');
+        window.history.back();
+    </script>";
 }
 
 $smtp->close();
