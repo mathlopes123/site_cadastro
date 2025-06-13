@@ -1,5 +1,4 @@
 <?php
-
 $codigo = $_POST['codigo'];
 $cgm = $_POST['cgm'];
 $nome = $_POST['nome'];
@@ -18,7 +17,6 @@ $usuario = 'root';
 $senha = '';
 $banco = 'aula_formulario';
 
-
 $conn = new mysqli($server, $usuario, $senha, $banco);
 
 if($conn->connect_error){
@@ -29,13 +27,17 @@ $smtp = $conn->prepare("INSERT INTO alunos (codigo, cgm, nome, email, celular, s
 $smtp->bind_param("ssssssssssss",$codigo, $cgm, $nome, $email, $celular, $serie, $turma, $cep, $endereco, $bairro, $cidade, $estado);
 
 if ($smtp->execute()) {
-    echo "Cadastrado";
-    # code...
-}else {
-    echo "Erro no envio dos dados: ".$smtp->error;
+    echo "<script>
+        alert('✅ Aluno cadastrado com sucesso!');
+        window.location.href='index.html';
+    </script>";
+} else {
+    echo "<script>
+        alert('❌ Erro no envio dos dados: ".$smtp->error."');
+        window.history.back();
+    </script>";
 }
 
 $smtp->close();
 $conn->close();
-
 ?>
